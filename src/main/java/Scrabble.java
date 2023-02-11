@@ -57,11 +57,11 @@ public class Scrabble {
     public int letterScore(char letter){
         if (letterValues.containsKey(String.valueOf(letter))){
             if (sDoubleLetters.contains(letter)){
-                sDoubleLetters.remove(sDoubleLetters.indexOf(letter));
+                sDoubleLetters.remove(Character.valueOf(letter));
                 return letterValues.get(String.valueOf(letter)) * 2;
             }
             else if(sTripleLetters.contains(letter)){
-                sTripleLetters.remove(sDoubleLetters.indexOf(letter));
+                sTripleLetters.remove(Character.valueOf(letter));
                 return letterValues.get(String.valueOf(letter)) * 3;
             }
             else{
