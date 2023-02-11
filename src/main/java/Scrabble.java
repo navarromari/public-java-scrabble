@@ -39,6 +39,7 @@ public class Scrabble {
         put("Z", 10);
     }};
 
+
     public Scrabble(String word){
         //setting scrabble word
         scrabbleWord = word;
@@ -56,11 +57,11 @@ public class Scrabble {
     public int letterScore(char letter){
         if (letterValues.containsKey(String.valueOf(letter))){
             if (sDoubleLetters.contains(letter)){
-                sDoubleLetters.remove(letter);
+                sDoubleLetters.remove(sDoubleLetters.indexOf(letter));
                 return letterValues.get(String.valueOf(letter)) * 2;
             }
             else if(sTripleLetters.contains(letter)){
-                sTripleLetters.remove(letter);
+                sTripleLetters.remove(sDoubleLetters.indexOf(letter));
                 return letterValues.get(String.valueOf(letter)) * 3;
             }
             else{
