@@ -1,10 +1,16 @@
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.*;
+import java.util.List;
 public class Scrabble {
-    private String scrabbleWord;
+    private final String scrabbleWord;
+    private List<Character> sDoubleLetters = new ArrayList<>();
+    private List<Character> sTripleLetters = new ArrayList<>();
+    private int wordMultiplier = 1;
 
-    private Map<String, Integer> letterValues = new HashMap<String, Integer>(){{
+
+    private final Map<String, Integer> letterValues = new HashMap<String, Integer>(){{
         put("A", 1);
         put("E", 1);
         put("I", 1);
@@ -37,22 +43,46 @@ public class Scrabble {
         //setting scrabble word
         scrabbleWord = word;
     }
+    public Scrabble(String word, Character[] doubleLetters, Character[] tripleLetters, boolean doubleWord, boolean tripleWord){
+        //setting scrabble word
+        scrabbleWord = word;
+        //setting double/triple letters/words
+        sDoubleLetters = new ArrayList<>(Arrays.asList(doubleLetters));
+        sTripleLetters = new ArrayList<>(Arrays.asList(tripleLetters));
+        if (doubleWord) wordMultiplier = 2;
+        if (tripleWord) wordMultiplier = 3;
+    }
+
+    public int letterScore(char letter){
+        if (letterValues.containsKey(String.valueOf(letter))){
+            if (sDoubleLetters.contains(letter)){
+                sDoubleLetters.remove(letter);
+                return letterValues.get(String.valueOf(letter)) * 2;
+            }
+            else if(sTripleLetters.contains(letter)){
+                sTripleLetters.remove(letter);
+                return letterValues.get(String.valueOf(letter)) * 3;
+            }
+            else{
+                return letterValues.get(String.valueOf(letter));
+            }
+        }
+        else return 0;
+    }
 
     public int score(){
         int score = 0;
 
-        if (!(scrabbleWord instanceof String)){
+        if (scrabbleWord == null){
             return 0;
         }
 
         char[] letters = scrabbleWord.toUpperCase().toCharArray();
         for (char letter : letters){
-            if(letterValues.containsKey(String.valueOf(letter)))
-            {
-                score+=letterValues.get(String.valueOf(letter));
-            }
+            score+=letterScore(letter);
         }
-        return score;
+
+        return score * wordMultiplier;
     }
 
     public static void main(String[] args) {
